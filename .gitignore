@@ -1,0 +1,8 @@
+#module
+node_modules/
+.idea/
+
+bundel.js
+bundle.js.map
+*.css
+.DS_Store

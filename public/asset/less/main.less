@@ -1,0 +1,71 @@
+@mainColor:#999;
+@default-font-size:20px;
+@borderMainColour:#666;
+
+#Reset ()
+{
+  padding:0;
+  margin:0px;
+}
+
+#Button()
+{
+  height: 33px;
+  width: 80px;
+  font-size: 20px;
+  border: 0;
+  border-radius: 5px;
+  box-shadow: 1px 1px #666;
+}
+body
+{
+  background: @mainColor;
+  font-size: @default-font-size;
+  overflow: hidden;
+  text-transform: capitalize;
+  font-family: monospace;
+  #Reset();
+}
+header
+{
+  border:0px solid @borderMainColour;
+  height: 100px;
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  color: green;
+}
+.mainContent
+{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    overflow-y: auto;
+    height:100%;
+    flex-direction: column;
+
+ }
+.gameStat
+{
+    background:pink;
+    flex-grow: 1;
+
+}
+
+.singleShape
+{
+    background:green;
+    flex-grow: 3;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.selectionArea
+{
+    background:blue;
+    flex-grow: 2;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
