@@ -5,6 +5,9 @@ import ShapeGenerator from "../js/shapefactory/ShapeGenerator";
 
 let shapeGenerator = new ShapeGenerator(document.getElementById("singleShape"));
 
-shapeGenerator.init();
+shapeGenerator.loadCube();
 shapeGenerator.animate();
 
+window.addEventListener( 'click', (event)=>{
+  shapeGenerator.onMouseMove(event);
+}, false );

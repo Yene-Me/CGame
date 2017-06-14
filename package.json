@@ -25,7 +25,7 @@
   "scripts": {
     "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --inline --progress --port 8181"
+    "start": "webpack-dev-server --inline --progress --port 8181  --host 192.168.0.16"
   },
   "keywords": [
     "fish"
