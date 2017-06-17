@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import SizeFinder from '../util/SizeFinder';
-import Lights from '../util/Lights';
+import Lights from '../util/Light';
 import CubeLocation from '../util/CubeLocation';
 import * as TWEEN from 'tween.js';
 
