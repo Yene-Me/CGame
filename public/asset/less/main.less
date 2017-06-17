@@ -1,15 +1,13 @@
-@mainColor:#999;
-@default-font-size:20px;
-@borderMainColour:#666;
+@mainColor: #999;
+@default-font-size: 20px;
+@borderMainColour: #666;
 
-#Reset ()
-{
-  padding:0;
-  margin:0px;
+#Reset () {
+  padding: 0;
+  margin: 0px;
 }
 
-#Button()
-{
+#Button() {
   height: 33px;
   width: 80px;
   font-size: 20px;
@@ -17,8 +15,8 @@
   border-radius: 5px;
   box-shadow: 1px 1px #666;
 }
-body
-{
+
+body {
   background: @mainColor;
   font-size: @default-font-size;
   overflow: hidden;
@@ -26,70 +24,70 @@ body
   font-family: monospace;
 
   width: 100%;
-height: 100%;
+  height: 100%;
 
   background: #E2E8E8;
   background: linear-gradient(141deg, #0fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
   #Reset();
 }
-header
-{
-  border:0px solid @borderMainColour;
+
+header {
+  border: 0px solid @borderMainColour;
   height: 100px;
   width: 100%;
   text-align: center;
   position: absolute;
   color: green;
 }
-.mainContent
-{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    overflow-y: auto;
-    height:100%;
-    flex-direction: column;
 
- }
-.gameStat
-{
-    background:pink;
-    flex-grow: 1;
+.mainContent {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  overflow-y: auto;
+  height: 100%;
+  flex-direction: column;
 
 }
 
-.singleShape
-{
-    flex-grow: 3;
-    display:flex;
-    justify-content: center;
-    align-items: center;
+.gameStat {
+  background: pink;
+  flex-grow: 1;
+
 }
 
-.selectionArea
-{
-    background:blue;
-    flex-grow: 2;
-    display:flex;
-    justify-content: center;
-    align-items: center;
+.singleShape {
+  flex-grow: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.gameOver{
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: Gloria Hallelujah;
-    font-size: 50px;
-    color: #FFFFFF;
+.selectionArea {
+  background: blue;
+  flex-grow: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.counter{
+.gameOver {
+  transition: all 2s ease;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Gloria Hallelujah, cursive;
+  font-size: 50px;
+  color: #FFFFFF;
+  background: rgba(40, 40, 40, 0.9);
+}
+
+.counter {
   position: absolute;
   z-index: 100;
   bottom: 5vh;
