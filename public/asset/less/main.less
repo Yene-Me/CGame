@@ -29,11 +29,7 @@ body
 height: 100%;
 
   background: #E2E8E8;
-background: #11e8bb; /* Old browsers */
-background: -moz-linear-gradient(top,  #11e8bb 0%, #8200c9 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(top,  #11e8bb 0%,#8200c9 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to bottom,  #11e8bb 0%,#8200c9 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#11e8bb', endColorstr='#8200c9',GradientType=0 ); /* IE6-9 */
+  background: linear-gradient(141deg, #0fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
   #Reset();
 }
 header
@@ -82,11 +78,14 @@ header
 .counter{
   position: absolute;
   z-index: 100;
-  top: 0;
+  bottom: 5vh;
   left: 0;
+  color: #FFFFFF;
   right: 0;
   text-align: center;
-  font-size: 44px;
-  font-family: fantasy;
-  font-weight: bold;
+  font-size: 8vh;
+
+  @import url('https://fonts.googleapis.com/css?family=Gloria+Hallelujah');
+  font-family: 'Gloria Hallelujah', cursive;
+  font-weight: 100;
 }
