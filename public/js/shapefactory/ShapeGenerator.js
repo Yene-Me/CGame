@@ -225,6 +225,8 @@ export default class ShapeGenerator {
                 this.isCheckInProgress = false;
                 this.isCompareOn = false;
             });
+
+        this.counter.add();
     }
 
     animate() {
