@@ -3,12 +3,13 @@ import SizeFinder from '../util/SizeFinder';
 import Lights from '../util/Lights';
 import CubeLocation from '../util/CubeLocation';
 import * as TWEEN from 'tween.js';
+import Timer  from 'time-counter';
 
 export default class ShapeGenerator
 {
   constructor(uiElement)
   {
-      this.TOTAL_CUBE_ITEMS = 7;
+      this.TOTAL_CUBE_ITEMS = 5;
       this._shapeHolder = uiElement;
       this.scene = null;
       this.camera = null;
@@ -40,8 +41,35 @@ export default class ShapeGenerator
       this.createRandomNumber();
       this.addLight();
       this._cubeLocation = new CubeLocation(this.TOTAL_CUBE_ITEMS,250);
-
       this._cubeCollection = [];
+
+
+      this.createTimer()
+
+
+
+  }
+
+  createTimer()
+  {
+    this.counter = document.createElement("DIV");
+    this.counter.classList.add("counter");
+    document.body.appendChild(this.counter);
+
+    // creating a countdown timer
+    this.countDown = new Timer({
+        direction: 'up',
+        startValue: '0:00' // one minute
+    });
+
+    this.countDown.on('change', (data)=>{
+      this.counter.textContent = data;
+    });
+
+    this.countDown.on('end', function () {
+
+    });
+    this.countDown.start();
   }
 
   createColourSet()
@@ -52,6 +80,7 @@ export default class ShapeGenerator
     }
 
   }
+
 
   createRandomNumber()
   {
@@ -66,9 +95,6 @@ export default class ShapeGenerator
   {
     this.main = this.createBoxItem(0,400,0,this.boxColour[0]);
 
-    //this.firstItem = this.createBoxItem((this.size*2)*-1,-200, 0 ,this.boxColour [this.randomColour[0]]);
-    //this.secondItem = this.createBoxItem(0, -200, 0,this.boxColour [this.randomColour[1]]);
-    //this.thirdItem = this.createBoxItem((this.size*2),-200,0,this.boxColour [this.randomColour[2]]);
     var index = 0
     for(let item of this._cubeLocation)
     {
@@ -89,9 +115,21 @@ export default class ShapeGenerator
   reloadCube()
   {
     this.main.position.set(0,400,0);
-    //this.firstItem.position.set((this.size*2)*-1,-200,0);
-    //this.secondItem.position.set(0,-200,0);
-    //this.thirdItem.position.set((this.size*2),-200,0);
+
+    this.countDown.stop();
+
+    this.countDown = null;
+
+    this.countDown = new Timer({
+        direction: 'up',
+        startValue: '0:00' // one minute
+    });
+
+    this.countDown.on('change', (data)=>{
+      this.counter.textContent = data;
+    });
+
+    this.countDown.start();
 
     for(let index = 0 ; index < this._cubeLocation.length ; index++)
     {
@@ -158,6 +196,9 @@ moveToPoint(object)
 {
   let item = object;
   this.isCheckInProgress = true;
+
+  this.countDown.stop();
+
 
   let itemx = item["position"].x;
   let itemy = item["position"].y;
