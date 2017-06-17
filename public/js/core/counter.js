@@ -1,4 +1,5 @@
 import Timer from "time-counter";
+import GameOverUpdate from "../util/GameOverUpdate";
 
 export default class Counter {
 
@@ -6,6 +7,7 @@ export default class Counter {
         this.counter = document.createElement("DIV");
         this.counter.classList.add("counter");
         document.body.appendChild(this.counter);
+        this.gameOverUpdate = new GameOverUpdate();
     }
 
     add(seconds = 20) {
@@ -23,7 +25,8 @@ export default class Counter {
             this.counter.textContent = data;
 
             if (data === "0:00") {
-                alert("Game Over // TODO");
+                //alert("Game Over // TODO");
+                this.gameOverUpdate.showMessage();
                 this.stopCounter();
             }
         });
