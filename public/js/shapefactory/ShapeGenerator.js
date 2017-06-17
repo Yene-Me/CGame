@@ -3,6 +3,7 @@ import SizeFinder from '../util/SizeFinder';
 import Lights from '../util/Light';
 import CubeLocation from '../util/CubeLocation';
 import * as TWEEN from 'tween.js';
+import Colours from "../util/Colours";
 
 export default class ShapeGenerator {
     constructor(uiElement) {
@@ -44,10 +45,10 @@ export default class ShapeGenerator {
 
     createColourSet() {
         for (let index = 0; index < 10; index++) {
-            this.boxColour.push(Lights.SET_OF_COLOURS)
+            this.boxColour.push(Colours.SET_OF_COLOURS)
         }
-
     }
+
 
     createRandomNumber() {
         for (var a = [0, 1, 2, 3, 4, 5, 6, 7], i = a.length; i--;) {
@@ -59,10 +60,6 @@ export default class ShapeGenerator {
 
     loadCube() {
         this.main = this.createBoxItem(0, 400, 0, this.boxColour[0]);
-
-        //this.firstItem = this.createBoxItem((this.size*2)*-1,-200, 0 ,this.boxColour [this.randomColour[0]]);
-        //this.secondItem = this.createBoxItem(0, -200, 0,this.boxColour [this.randomColour[1]]);
-        //this.thirdItem = this.createBoxItem((this.size*2),-200,0,this.boxColour [this.randomColour[2]]);
         var index = 0
         for (let item of this._cubeLocation) {
             let cubeData = {
@@ -81,9 +78,6 @@ export default class ShapeGenerator {
 
     reloadCube() {
         this.main.position.set(0, 400, 0);
-        //this.firstItem.position.set((this.size*2)*-1,-200,0);
-        //this.secondItem.position.set(0,-200,0);
-        //this.thirdItem.position.set((this.size*2),-200,0);
 
         for (let index = 0; index < this._cubeLocation.length; index++) {
             let item = this._cubeLocation[index];
@@ -135,7 +129,6 @@ export default class ShapeGenerator {
         var intersects = this.raycaster.intersectObjects(this.scene.children);
 
         for (var i = 0; i < intersects.length; i++) {
-            //intersects[ i ].object.material[0].color.set( 0x000000 );
             this.moveToPoint(intersects[i].object);
         }
 
@@ -157,7 +150,7 @@ export default class ShapeGenerator {
             rz: item.rotation.z
         })
             .to({x: 0, y: 100, scale: 2, rx: 0, ry: 0, rz: 0}, 2000)
-            .easing(TWEEN.Easing.Elastic.InOut)
+            .easing(TWEEN.Easing.Back.Out)
 
             .onUpdate(function () {
                 item["position"].x = this.x;
@@ -173,13 +166,16 @@ export default class ShapeGenerator {
         let main = this.main;
         let AlignTween = new TWEEN.Tween({x: main.rotation.x, y: main.rotation.y, z: main.rotation.z})
             .to({x: 0, y: 0, z: 0}, 2000)
-            .easing(TWEEN.Easing.Back.Out)
+            .easing(TWEEN.Easing.Quartic.InOut)
 
             .onUpdate(function () {
                 main["rotation"].x = this.x;
                 main["rotation"].y = this.y;
                 main["rotation"].z = this.z;
             }).start();
+
+
+        this.camera.z = 100;
 
 
     }
@@ -226,22 +222,9 @@ export default class ShapeGenerator {
             this.main.rotation.x -= 0.02;
             this.main.rotation.z -= 0.02;
 
-            //this.firstItem.rotation.y -=0.01;
-            //this.firstItem.rotation.x -=0.02;
-            //this.firstItem.rotation.z -=0.02;
-
-            //this.secondItem.rotation.y -=0.02;
-            //this.secondItem.rotation.x +=0.01;
-            //this.secondItem.rotation.z +=0.01;
-
-
-            //this.thirdItem.rotation.y +=0.01;
-            //this.thirdItem.rotation.x -=0.02;
-            //this.thirdItem.rotation.z +=0.01;
-
             for (let item of this._cubeCollection) {
-                item.cube.rotation.y += item.rotation.x;
-                item.cube.rotation.x -= item.rotation.y;
+                item.cube.rotation.y += item.rotation.y;
+                item.cube.rotation.x -= item.rotation.x;
                 item.cube.rotation.z += item.rotation.z;
 
                 item.cube.position.z = Math.cos(item.angle) * 300;
