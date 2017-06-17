@@ -9,7 +9,7 @@ import Counter from "../core/counter";
 
 export default class ShapeGenerator {
     constructor(uiElement) {
-        this.TOTAL_CUBE_ITEMS = 7;
+        this.TOTAL_CUBE_ITEMS = 10;
         this._shapeHolder = uiElement;
         this.scene = null;
         this.camera = null;
@@ -55,9 +55,14 @@ export default class ShapeGenerator {
         }
     }
 
-
     createRandomNumber() {
-        for (var a = [0, 1, 2, 3, 4, 5, 6, 7], i = a.length; i--;) {
+
+        let numberList = [];
+        for(let index = 0; index < this.TOTAL_CUBE_ITEMS ; index ++)
+        {
+          numberList.push(index)
+        }
+        for (var a = numberList, i = a.length; i--;) {
             var random = a.splice(Math.floor(Math.random() * (i + 1)), 1)[0];
             this.randomColour.push(random);
         }
