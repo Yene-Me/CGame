@@ -40,13 +40,15 @@ export default class ShapeGenerator {
         this.createColourSet();
         this.createRandomNumber();
         this.addLight();
-        this._cubeLocation = new CubeLocation(this.TOTAL_CUBE_ITEMS, 250);
+        this._cubeLocation = new CubeLocation(this.TOTAL_CUBE_ITEMS, 200);
 
         this._cubeCollection = [];
 
         this.counter = new Counter();
 
         this.counter.startCounter();
+
+        this.radius = Math.min(50*window.innerWidth/100,400);
     }
 
     createColourSet() {
@@ -242,8 +244,8 @@ export default class ShapeGenerator {
                 item.cube.rotation.x -= item.rotation.x;
                 item.cube.rotation.z += item.rotation.z;
 
-                item.cube.position.z = Math.cos(item.angle) * 300;
-                item.cube.position.x = Math.sin(item.angle) * 300;
+                item.cube.position.z = Math.cos(item.angle) * this.radius;
+                item.cube.position.x = Math.sin(item.angle) * this.radius;
 
                 item.angle += 0.01;
             }
