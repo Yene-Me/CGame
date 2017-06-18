@@ -44,9 +44,7 @@ export default class ShapeGenerator {
 
         this._cubeCollection = [];
 
-        this.counter = new Counter();
 
-        this.counter.startCounter();
 
         this.radius = Math.min(50*window.innerWidth/100,400);
     }
@@ -87,6 +85,9 @@ export default class ShapeGenerator {
             index++;
             this._cubeCollection.push(cubeData);
         }
+
+        this.counter = new Counter();
+        this.counter.startCounter();
     }
 
     reloadCube() {

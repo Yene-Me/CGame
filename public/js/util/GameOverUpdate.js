@@ -4,11 +4,16 @@ export default class GameOverUpdate
   {
     this.counter = document.createElement("DIV");
     document.body.appendChild(this.counter);
+
+    this.counter.addEventListener('click', ()=>
+    {
+      console.log(this);
+    })
   }
 
   showMessage()
   {
-      this.counter.classList.add("gameover");
+    this.counter.classList.add("gameover");
     this.counter.textContent = "Game Over";
     this.reload = document.createElement("DIV");
     this.counter.appendChild(this.reload);
