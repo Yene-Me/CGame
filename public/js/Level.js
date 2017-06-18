@@ -5,11 +5,7 @@ export default class Level
   constructor()
   {
     this.numberOfLevel = 10;
-
     this.shapeGenerator = new ShapeGenerator(document.getElementById("singleShape"));
-
-
-
     window.addEventListener('click', (event) => {
         this.shapeGenerator.onMouseMove(event);
     }, false);
