@@ -1,7 +1,7 @@
 const Constant = {
-  URL : "https://fishshop.attest.tech/compatibility",
-  SEARCH_RESULT: "result",
-  SEARCH_ERROR: "error"
+  RESULT: "result",
+  ERROR: "error",
+  RELOAD:"reload"
 }
 
 export default  Constant;

@@ -26,7 +26,7 @@ export default class Counter {
 
             if (data === "0:00") {
                 //alert("Game Over // TODO");
-                this.gameOverUpdate.showMessage();
+                this.gameOverUpdate.showMessage("Game Over");
                 this.stopCounter();
             }
         });

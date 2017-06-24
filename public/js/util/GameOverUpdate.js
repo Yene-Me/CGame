@@ -1,3 +1,5 @@
+import PubSub from '../core/PubSub';
+import Const from '../core/Const';
 export default class GameOverUpdate
 {
   constructor()
@@ -7,15 +9,24 @@ export default class GameOverUpdate
 
     this.counter.addEventListener('click', ()=>
     {
-      console.log(this);
-    })
+      this.counter.style.display = "none";
+      PubSub.publish(Const.RELOAD,"reload");
+
+    });
+
+    PubSub.subscribe(Const.RESULT,(point)=>{
+      this.showMessage(point+ " Matched!");
+    });
   }
 
-  showMessage()
+  showMessage(msg)
   {
+    this.counter.style.display = "flex";
     this.counter.classList.add("gameover");
-    this.counter.textContent = "Game Over";
+    this.counter.textContent = msg;
     this.reload = document.createElement("DIV");
+    this.reload.classList.add("touchReload");
+    this.reload.textContent = "Touch Reload."
     this.counter.appendChild(this.reload);
 
   }

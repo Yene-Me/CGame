@@ -3,7 +3,8 @@ import SizeFinder from '../util/SizeFinder';
 import Lights from '../util/Light';
 import CubeLocation from '../util/CubeLocation';
 import * as TWEEN from 'tween.js';
-
+import PubSub from '../core/PubSub';
+import Const from '../core/Const';
 import Colours from "../util/Colours";
 import Counter from "../core/counter";
 
@@ -43,10 +44,12 @@ export default class ShapeGenerator {
         this._cubeLocation = new CubeLocation(this.TOTAL_CUBE_ITEMS, 200);
 
         this._cubeCollection = [];
-
-
-
         this.radius = Math.min(50*window.innerWidth/100,400);
+
+        PubSub.subscribe(Const.RELOAD, ()=>{
+          console.log("reload Game");
+          this.counter.startCounter();
+        });
     }
 
     createColourSet() {
@@ -97,8 +100,6 @@ export default class ShapeGenerator {
             let item = this._cubeLocation[index];
             this._cubeCollection[index].cube.position.set(item.x, -200, item.z);
         }
-
-        this.counter.startCounter();
     }
 
     addLight() {
@@ -125,6 +126,7 @@ export default class ShapeGenerator {
         mesh.position.y = y;
         mesh.position.x = x;
         mesh.position.z = z;
+        mesh._faceColour = colour;
         this.scene.add(mesh);
         return mesh;
     }
@@ -211,6 +213,11 @@ export default class ShapeGenerator {
 
         let main = this.main;
 
+        let playerSelection = selectedObject["_faceColour"];
+        let mainObject = this.main["_faceColour"];
+
+
+       this.findMatch(mainObject,playerSelection);
 
         let tween = new TWEEN.Tween({x: 0, y: 0, z: 0})
             .to({x: 0.08, y: 0.05, z: 1}, 500)
@@ -219,6 +226,7 @@ export default class ShapeGenerator {
             .onUpdate(function () {
                 selectedObject.rotation.x += this.x;
                 main.rotation.x += this.x;
+
 
             }).start().onComplete(() => {
                 //this.mouse = null;
@@ -230,6 +238,27 @@ export default class ShapeGenerator {
             });
 
         this.counter.add();
+    }
+
+    findMatch(mainObject, playerObject)
+    {
+      let counter = 0;
+      let point = 0;
+      let id = setInterval(()=>{
+        if(counter >= 5)
+        {
+          clearInterval(id);
+          console.log("final point", point);
+          PubSub.publish(Const.RESULT,point);
+        }
+        let index = counter++
+        if( playerObject[index] == mainObject[index])
+        {
+          console.log("Match");
+          point+=1;
+
+        }
+      },500)
     }
 
     animate() {
