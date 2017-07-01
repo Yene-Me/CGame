@@ -38,10 +38,9 @@ export default class ShapeGenerator {
 
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
         this.camera.position.z = 1000;
-        this.createColourSet();
-        this.createRandomNumber();
+
         this.addLight();
-        this._cubeLocation = new CubeLocation(this.TOTAL_CUBE_ITEMS, 200);
+
 
         this._cubeCollection = [];
         this.radius = Math.min(50*window.innerWidth/100,400);
@@ -52,14 +51,23 @@ export default class ShapeGenerator {
         });
     }
 
-    createColourSet() {
-        for (let index = 0; index < 10; index++) {
+    init (level)
+    {
+      this.TOTAL_CUBE_ITEMS = level
+      this._cubeLocation = new CubeLocation(this.TOTAL_CUBE_ITEMS, 200);
+      this.createColourSet();
+      this.createRandomNumber();
+    }
+
+    createColourSet()
+    {
+        for (let index = 0; index < this.TOTAL_CUBE_ITEMS; index++) {
             this.boxColour.push(Colours.SET_OF_COLOURS)
         }
     }
 
-    createRandomNumber() {
-
+    createRandomNumber()
+    {
         let numberList = [];
         for(let index = 0; index < this.TOTAL_CUBE_ITEMS ; index ++)
         {
@@ -72,12 +80,13 @@ export default class ShapeGenerator {
 
     }
 
-    loadCube() {
-        this.main = this.createBoxItem(0, 400, 0, this.boxColour[0]);
+    loadCube()
+    {
+        this.main = this.createBoxItem(0, 400, 0, this.boxColour[0],true);
         var index = 0
         for (let item of this._cubeLocation) {
             let cubeData = {
-                cube: this.createBoxItem(item.x, -200, item.z, this.boxColour[this.randomColour[index]]),
+                cube: this.createBoxItem(item.x, -200, item.z, this.boxColour[this.randomColour[index]],false),
                 angle: item.angel,
                 rotation: {
                     x: Math.random() / 50,
@@ -93,7 +102,8 @@ export default class ShapeGenerator {
         this.counter.startCounter();
     }
 
-    reloadCube() {
+    reloadCube()
+    {
         this.main.position.set(0, 400, 0);
 
         for (let index = 0; index < this._cubeLocation.length; index++) {
@@ -102,14 +112,16 @@ export default class ShapeGenerator {
         }
     }
 
-    addLight() {
+    addLight()
+    {
         this.scene.add(Lights.ADD_LIGHTS[0]);
         this.scene.add(Lights.ADD_LIGHTS[1]);
         this.scene.add(Lights.ADD_LIGHTS[2]);
         this.scene.add(Lights.ADD_LIGHTS[3]);
     }
 
-    createBoxItem(x, y, z, colour) {
+    createBoxItem(x, y, z, colour,isMainCube)
+    {
         let geometry = new THREE.BoxGeometry(this.size, this.size, this.size);
 
         let material = [
@@ -127,16 +139,19 @@ export default class ShapeGenerator {
         mesh.position.x = x;
         mesh.position.z = z;
         mesh._faceColour = colour;
+        mesh._isMainCube = isMainCube;
         this.scene.add(mesh);
         return mesh;
     }
 
-    onMouseMove(event) {
+    onMouseMove(event)
+    {
         this.mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
         this.mouse.y = -( event.clientY / window.innerHeight ) * 2 + 1;
     }
 
-    update() {
+    update()
+    {
         if (this.isCheckInProgress) {
             return;
         }
@@ -147,12 +162,21 @@ export default class ShapeGenerator {
         var intersects = this.raycaster.intersectObjects(this.scene.children);
 
         for (var i = 0; i < intersects.length; i++) {
+
+          if (this.isCheckInProgress) {
+              return;
+          }
+
+          if(!intersects[i].object._isMainCube)
+          {
             this.moveToPoint(intersects[i].object);
+          }
         }
 
     }
 
-    moveToPoint(object) {
+    moveToPoint(object)
+    {
         let item = object;
         this.isCheckInProgress = true;
 
@@ -200,8 +224,8 @@ export default class ShapeGenerator {
 
     }
 
-    checkPickedWithMain(selectedObject) {
-
+    checkPickedWithMain(selectedObject)
+    {
         selectedObject.rotation.y = 0;
         selectedObject.rotation.x = -0.02;
         selectedObject.rotation.z = 0;
@@ -248,20 +272,18 @@ export default class ShapeGenerator {
         if(counter >= 5)
         {
           clearInterval(id);
-          console.log("final point", point);
           PubSub.publish(Const.RESULT,point);
         }
         let index = counter++
         if( playerObject[index] == mainObject[index])
         {
-          console.log("Match");
           point+=1;
-
         }
       },500)
     }
 
-    animate() {
+    animate()
+    {
         requestAnimationFrame(() => {
             this.animate()
         });
@@ -278,6 +300,7 @@ export default class ShapeGenerator {
 
                 item.cube.position.z = Math.cos(item.angle) * this.radius;
                 item.cube.position.x = Math.sin(item.angle) * this.radius;
+                //item.cube.position.y = Math.sin(item.angle) * this.radius;
 
                 item.angle += 0.01;
             }

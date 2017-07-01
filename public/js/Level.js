@@ -4,9 +4,9 @@ export default class Level
 {
   constructor()
   {
-    this.numberOfLevel = 10;
+    this.numberOfLevel = 11;
     this.shapeGenerator = new ShapeGenerator(document.getElementById("singleShape"));
-    window.addEventListener('click', (event) => {
+    document.getElementById("singleShape").addEventListener('click', (event) => {
         this.shapeGenerator.onMouseMove(event);
     }, false);
 
@@ -27,7 +27,8 @@ export default class Level
 
       level.addEventListener('click', (event)=>
       {
-         console.log(event.srcElement.VALUE);
+
+         this.shapeGenerator.init(Math.ceil(event.srcElement.VALUE*1.5));
          this.shapeGenerator.loadCube();
          this.shapeGenerator.animate();
          this.hideLevel();
@@ -38,7 +39,11 @@ export default class Level
 
   hideLevel()
   {
-    this.levelListHolder.style.display = "none";
+    this.levelListHolder.style.opacity = "0";
+
+    setTimeout(()=>{
+      this.levelListHolder.style.display = "none";
+    },1000)
   }
 
 }

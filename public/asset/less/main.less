@@ -103,7 +103,7 @@ header {
   text-align: center;
   font-size: 8vh;
 
-  @import url('https://fonts.googleapis.com/css?family=Gloria+Hallelujah');
+  //@import url('https://fonts.googleapis.com/css?family=Gloria+Hallelujah');
   font-family: 'Gloria Hallelujah', cursive;
   font-weight: 100;
 }
@@ -120,16 +120,25 @@ header {
   font-family: Gloria Hallelujah, cursive;
   font-size: 50px;
   flex-wrap: wrap;
+  transition: all 1s ease;
 
   div{
     border: 3px solid #2cb5e8;
-    margin: 2px;
+    margin: 20px;
     width: 85px;
     border-radius: 10px;
     text-align: center;
     color: #fff;
     height: 85px;
     box-shadow: 2px 2px 9px 1px #333;
+    cursor:pointer;
+
+    &:active
+    {
+      background: pink;
+    }
 
   }
+
+
 }

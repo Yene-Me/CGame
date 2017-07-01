@@ -7,8 +7,9 @@ export default class GameOverUpdate
     this.counter = document.createElement("DIV");
     document.body.appendChild(this.counter);
 
-    this.counter.addEventListener('click', ()=>
+    this.counter.addEventListener('click', (e)=>
     {
+      e.preventDefault();
       this.counter.style.display = "none";
       PubSub.publish(Const.RELOAD,"reload");
 
@@ -26,9 +27,10 @@ export default class GameOverUpdate
     this.counter.textContent = msg;
     this.reload = document.createElement("DIV");
     this.reload.classList.add("touchReload");
-    this.reload.textContent = "Touch Reload."
+    this.reload.textContent = "Touch Reload.";
+    
+    PubSub.publish(Const.GAME_OVER,"GameOver");
     this.counter.appendChild(this.reload);
-
   }
 
   hideMessage()
