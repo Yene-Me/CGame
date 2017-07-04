@@ -43,35 +43,31 @@ export default class ShapeGenerator {
 
 
         this._cubeCollection = [];
-        this.radius = Math.min(50*window.innerWidth/100,400);
+        this.radius = Math.min(50 * window.innerWidth / 100, 400);
 
-        PubSub.subscribe(Const.RELOAD, ()=>{
-          console.log("reload Game");
-          this.counter.startCounter();
+        PubSub.subscribe(Const.RELOAD, () => {
+            console.log("reload Game");
+            this.counter.startCounter();
         });
     }
 
-    init (level)
-    {
-      this.TOTAL_CUBE_ITEMS = level
-      this._cubeLocation = new CubeLocation(this.TOTAL_CUBE_ITEMS, 200);
-      this.createColourSet();
-      this.createRandomNumber();
+    init(level) {
+        this.TOTAL_CUBE_ITEMS = level
+        this._cubeLocation = new CubeLocation(this.TOTAL_CUBE_ITEMS, 200);
+        this.createColourSet();
+        this.createRandomNumber();
     }
 
-    createColourSet()
-    {
+    createColourSet() {
         for (let index = 0; index < this.TOTAL_CUBE_ITEMS; index++) {
             this.boxColour.push(Colours.SET_OF_COLOURS)
         }
     }
 
-    createRandomNumber()
-    {
+    createRandomNumber() {
         let numberList = [];
-        for(let index = 0; index < this.TOTAL_CUBE_ITEMS ; index ++)
-        {
-          numberList.push(index)
+        for (let index = 0; index < this.TOTAL_CUBE_ITEMS; index++) {
+            numberList.push(index)
         }
         for (var a = numberList, i = a.length; i--;) {
             var random = a.splice(Math.floor(Math.random() * (i + 1)), 1)[0];
@@ -80,13 +76,12 @@ export default class ShapeGenerator {
 
     }
 
-    loadCube()
-    {
-        this.main = this.createBoxItem(0, 400, 0, this.boxColour[0],true);
+    loadCube() {
+        this.main = this.createBoxItem(0, 400, 0, this.boxColour[0], true);
         var index = 0
         for (let item of this._cubeLocation) {
             let cubeData = {
-                cube: this.createBoxItem(item.x, -200, item.z, this.boxColour[this.randomColour[index]],false),
+                cube: this.createBoxItem(item.x, -200, item.z, this.boxColour[this.randomColour[index]], false),
                 angle: item.angel,
                 rotation: {
                     x: Math.random() / 50,
@@ -102,8 +97,7 @@ export default class ShapeGenerator {
         this.counter.startCounter();
     }
 
-    reloadCube()
-    {
+    reloadCube() {
         this.main.position.set(0, 400, 0);
 
         for (let index = 0; index < this._cubeLocation.length; index++) {
@@ -112,16 +106,14 @@ export default class ShapeGenerator {
         }
     }
 
-    addLight()
-    {
+    addLight() {
         this.scene.add(Lights.ADD_LIGHTS[0]);
         this.scene.add(Lights.ADD_LIGHTS[1]);
         this.scene.add(Lights.ADD_LIGHTS[2]);
         this.scene.add(Lights.ADD_LIGHTS[3]);
     }
 
-    createBoxItem(x, y, z, colour,isMainCube)
-    {
+    createBoxItem(x, y, z, colour, isMainCube) {
         let geometry = new THREE.BoxGeometry(this.size, this.size, this.size);
 
         let material = [
@@ -144,14 +136,12 @@ export default class ShapeGenerator {
         return mesh;
     }
 
-    onMouseMove(event)
-    {
+    onMouseMove(event) {
         this.mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
         this.mouse.y = -( event.clientY / window.innerHeight ) * 2 + 1;
     }
 
-    update()
-    {
+    update() {
         if (this.isCheckInProgress) {
             return;
         }
@@ -163,20 +153,18 @@ export default class ShapeGenerator {
 
         for (var i = 0; i < intersects.length; i++) {
 
-          if (this.isCheckInProgress) {
-              return;
-          }
+            if (this.isCheckInProgress) {
+                return;
+            }
 
-          if(!intersects[i].object._isMainCube)
-          {
-            this.moveToPoint(intersects[i].object);
-          }
+            if (!intersects[i].object._isMainCube) {
+                this.moveToPoint(intersects[i].object);
+            }
         }
 
     }
 
-    moveToPoint(object)
-    {
+    moveToPoint(object) {
         let item = object;
         this.isCheckInProgress = true;
 
@@ -208,7 +196,11 @@ export default class ShapeGenerator {
 
 
         let main = this.main;
-        let AlignTween = new TWEEN.Tween({x: main.rotation.x, y: main.rotation.y, z: main.rotation.z})
+        let AlignTween = new TWEEN.Tween({
+            x: main.rotation.x,
+            y: main.rotation.y,
+            z: main.rotation.z
+        })
             .to({x: 0, y: 0, z: 0}, 2000)
             .easing(TWEEN.Easing.Quartic.InOut)
 
@@ -224,8 +216,7 @@ export default class ShapeGenerator {
 
     }
 
-    checkPickedWithMain(selectedObject)
-    {
+    checkPickedWithMain(selectedObject) {
         selectedObject.rotation.y = 0;
         selectedObject.rotation.x = -0.02;
         selectedObject.rotation.z = 0;
@@ -241,7 +232,7 @@ export default class ShapeGenerator {
         let mainObject = this.main["_faceColour"];
 
 
-       this.findMatch(mainObject,playerSelection);
+        this.findMatch(mainObject, playerSelection);
 
         let tween = new TWEEN.Tween({x: 0, y: 0, z: 0})
             .to({x: 0.08, y: 0.05, z: 1}, 500)
@@ -264,26 +255,22 @@ export default class ShapeGenerator {
         this.counter.add();
     }
 
-    findMatch(mainObject, playerObject)
-    {
-      let counter = 0;
-      let point = 0;
-      let id = setInterval(()=>{
-        if(counter >= 5)
-        {
-          clearInterval(id);
-          PubSub.publish(Const.RESULT,point);
-        }
-        let index = counter++
-        if( playerObject[index] == mainObject[index])
-        {
-          point+=1;
-        }
-      },500)
+    findMatch(mainObject, playerObject) {
+        let counter = 0;
+        let point = 0;
+        let id = setInterval(() => {
+            if (counter >= 5) {
+                clearInterval(id);
+                PubSub.publish(Const.RESULT, point);
+            }
+            let index = counter++
+            if (playerObject[index] == mainObject[index]) {
+                point += 1;
+            }
+        }, 500)
     }
 
-    animate()
-    {
+    animate() {
         requestAnimationFrame(() => {
             this.animate()
         });

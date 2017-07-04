@@ -2,10 +2,8 @@ import {Howl} from 'howler';
 import Level from "../js/Level";
 
 
-
 let level = new Level();
 level.createLevelView();
-
 
 
 //Play some background music forever
