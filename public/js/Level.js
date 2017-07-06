@@ -1,4 +1,6 @@
 import ShapeGenerator from "../js/shapefactory/ShapeGenerator";
+import PubSub from '../js/core/PubSub';
+import Const from '../js/core/Const';
 
 export default class Level {
     constructor() {
@@ -8,11 +10,13 @@ export default class Level {
             this.shapeGenerator.onMouseMove(event);
         }, false);
 
+        PubSub.subscribe(Const.LEVEL, ()=>
+        {
+            this.showLevel();
+        });
     }
 
     createLevelView() {
-
-
         this.levelListHolder = document.createElement("DIV");
         this.levelListHolder.classList.add("levelListHolder");
 
@@ -52,6 +56,15 @@ export default class Level {
         setTimeout(() => {
             this.levelListHolder.style.display = "none";
         }, 1000)
+    }
+
+    showLevel()
+    {
+      this.levelListHolder.style.opacity = "1";
+
+      setTimeout(() => {
+          this.levelListHolder.style.display = "flex";
+      }, 100)
     }
 
 }

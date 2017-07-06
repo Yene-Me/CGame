@@ -40,6 +40,20 @@ header {
   color: green;
 }
 
+.sound {
+  position: absolute;
+  top:0;
+  height: 52px;
+  width: 52px;
+  background-image: url("/public/asset/image/sound_icon.svg");
+  background-repeat: no-repeat;
+  cursor: pointer;
+  background-size: contain;
+  &.mute{
+    opacity: 0.2;
+  }
+}
+
 .mainContent {
   display: flex;
   flex-wrap: wrap;
@@ -90,7 +104,8 @@ header {
 
 .touchReload
 {
-  font-size: 20px;
+  font-size: 30px;
+  margin: 10px 0px;
 }
 
 .counter {
@@ -124,6 +139,7 @@ header {
   flex-wrap: wrap;
   transition: all 0.5s ease;
   overflow: auto;
+  background-color: rgba(0,0,0,0.8);
 
   h1{
     flex-grow: 1;

@@ -2,13 +2,11 @@ import PubSub from '../core/PubSub';
 import Const from '../core/Const';
 export default class GameOverUpdate {
     constructor() {
-        this.counter = document.createElement("DIV");
-        document.body.appendChild(this.counter);
+        this.level = document.createElement("DIV");
+        document.body.appendChild(this.level);
 
-        this.counter.addEventListener('click', (e) => {
+        this.level.addEventListener('click', (e) => {
             e.preventDefault();
-            this.counter.style.display = "none";
-            PubSub.publish(Const.RELOAD, "reload");
 
         });
 
@@ -18,15 +16,44 @@ export default class GameOverUpdate {
     }
 
     showMessage(msg) {
-        this.counter.style.display = "flex";
-        this.counter.classList.add("gameover");
-        this.counter.textContent = msg;
-        this.reload = document.createElement("DIV");
-        this.reload.classList.add("touchReload");
-        this.reload.textContent = "Touch Reload.";
+
+        this.level.style.display = "flex";
+        this.level.classList.add("gameover");
+        this.level.textContent = msg;
+
+        this.createButton(this.level,"Quit","quit", ()=>{
+          this.level.style.display = "none";
+          PubSub.publish(Const.RELOAD, "quit");
+        });
+
+        this.createButton(this.level, "Repeat", "repeat",  ()=>{
+          this.level.style.display = "none";
+          PubSub.publish(Const.RELOAD, "reload");
+        }
+      );
+
+        this.createButton(this.level,"Next", "Next" , ()=>{
+          this.level.style.display = "none";
+          PubSub.publish(Const.LEVEL, "level");
+        });
 
         PubSub.publish(Const.GAME_OVER, "GameOver");
-        this.counter.appendChild(this.reload);
+
+    }
+
+    createButton(holder, text, className, callBack)
+    {
+      let button = document.createElement("DIV");
+          button.classList.add("touchReload");
+          button.textContent = text;
+
+      holder.appendChild(button);
+
+      button.addEventListener('click', (e)=>
+      {
+        callBack();
+        console.log(e);
+      })
     }
 
     hideMessage() {

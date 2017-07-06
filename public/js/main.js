@@ -5,6 +5,8 @@ import Level from "../js/Level";
 let level = new Level();
 level.createLevelView();
 
+let isSoundOn = true;
+
 
 //Play some background music forever
 let backgroundMusic = new Howl({
@@ -13,3 +15,28 @@ let backgroundMusic = new Howl({
     loop: true,
     volume: 0.5,
 });
+
+let soundButton = document.createElement("div")
+
+soundButton.classList.add("sound");
+
+soundButton.addEventListener('click', ()=>{
+
+  if(isSoundOn)
+  {
+    backgroundMusic.stop();
+    soundButton.classList.add("mute");
+    isSoundOn = false;
+  }
+  else
+  {
+    backgroundMusic.play();
+    soundButton.classList.remove("mute");
+    isSoundOn = true;
+  }
+
+  backgroundMusic.volume = 0;
+})
+
+
+document.body.appendChild(soundButton);

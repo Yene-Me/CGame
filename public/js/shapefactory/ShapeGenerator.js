@@ -20,7 +20,7 @@ export default class ShapeGenerator {
         this.mesh = null;
         this.size = SizeFinder.CUBE_SIZE;
         this.raycaster = new THREE.Raycaster();
-        this.mouse = new THREE.Vector2();
+
         this.isCheckInProgress = false;
         this.randomColour = [];
         this.boxColour = [];
@@ -39,7 +39,7 @@ export default class ShapeGenerator {
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
         this.camera.position.z = 1000;
 
-        this.addLight();
+
 
 
         this._cubeCollection = [];
@@ -53,9 +53,25 @@ export default class ShapeGenerator {
 
     init(level) {
         this.TOTAL_CUBE_ITEMS = level
+        this.mouse = null;
+        this.removeAllObject();
         this._cubeLocation = new CubeLocation(this.TOTAL_CUBE_ITEMS, 200);
+
         this.createColourSet();
         this.createRandomNumber();
+        this.addLight();
+        this.mouse = new THREE.Vector2();
+
+        this.mouse.x = -1000;
+        this.mouse.y = -1000;
+    }
+
+
+    removeAllObject()
+    {
+      while(this.scene.children.length > 0){
+            this.scene.remove(this.scene.children[0]);
+          }
     }
 
     createColourSet() {
@@ -92,9 +108,17 @@ export default class ShapeGenerator {
             index++;
             this._cubeCollection.push(cubeData);
         }
+        if(this.counter)
+        {
+          this.counter.startCounter();
+        }
+         else
+        {
+            this.counter = new Counter();
+            this.counter.startCounter();
+        }
 
-        this.counter = new Counter();
-        this.counter.startCounter();
+
     }
 
     reloadCube() {
