@@ -18,7 +18,7 @@ export default class Counter {
         // creating a countdown timer
         this.countDown = new Timer({
             direction: 'down',
-            startValue: 30 // 30 seconds
+            startValue: 300 // 30 seconds
         });
 
         this.countDown.on('change', (data) => {

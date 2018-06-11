@@ -7,6 +7,7 @@ import PubSub from '../core/PubSub';
 import Const from '../core/Const';
 import Colours from "../util/Colours";
 import Counter from "../core/counter";
+import ParticlesGenerator from "../particle/ParticlesGenerator"
 
 export default class ShapeGenerator {
     constructor(uiElement) {
@@ -15,9 +16,6 @@ export default class ShapeGenerator {
         this.scene = null;
         this.camera = null;
         this.renderer = null;
-        this.geometry = null;
-        this.material = null;
-        this.mesh = null;
         this.size = SizeFinder.CUBE_SIZE;
         this.raycaster = new THREE.Raycaster();
 
@@ -39,8 +37,7 @@ export default class ShapeGenerator {
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
         this.camera.position.z = 1000;
 
-
-
+        this.mainCubeY = window.innerHeight*0.50;
 
         this._cubeCollection = [];
         this.radius = Math.min(50 * window.innerWidth / 100, 400);
@@ -52,16 +49,15 @@ export default class ShapeGenerator {
     }
 
     init(level) {
-        this.TOTAL_CUBE_ITEMS = level
+        this.TOTAL_CUBE_ITEMS = level;
         this.mouse = null;
         this.removeAllObject();
-        this._cubeLocation = new CubeLocation(this.TOTAL_CUBE_ITEMS, 200);
+        this._cubeLocation = new CubeLocation(this.TOTAL_CUBE_ITEMS, 200).createSimpleLocationPoints();
 
         this.createColourSet();
         this.createRandomNumber();
         this.addLight();
         this.mouse = new THREE.Vector2();
-
         this.mouse.x = -1000;
         this.mouse.y = -1000;
     }
@@ -92,13 +88,14 @@ export default class ShapeGenerator {
 
     }
 
-    loadCube() {
-        this.main = this.createBoxItem(0, 400, 0, this.boxColour[0], true);
-        var index = 0
+    createColourBaseCube () {
+        this.main = this.createBoxItemTexture(0, this.mainCubeY, 0, this.boxColour[0], true);
+        var index = 0;
         for (let item of this._cubeLocation) {
             let cubeData = {
-                cube: this.createBoxItem(item.x, -200, item.z, this.boxColour[this.randomColour[index]], false),
+                cube: this.createBoxItemTexture(item.x, -200, item.z, this.boxColour[this.randomColour[index]], false),
                 angle: item.angel,
+                particles: this.createParticle(),
                 rotation: {
                     x: Math.random() / 50,
                     y: Math.random() / 50,
@@ -108,6 +105,24 @@ export default class ShapeGenerator {
             index++;
             this._cubeCollection.push(cubeData);
         }
+    }
+
+    createParticle() {
+
+        this.particles = new ParticlesGenerator(100);
+
+        this.scene.add(this.particles.create());
+
+        return this.particles;
+
+    }
+
+    loadCube(cubeType) {
+
+        if(cubeType === 1) {
+            this.createColourBaseCube();
+        }
+
         if(this.counter)
         {
           this.counter.startCounter();
@@ -122,7 +137,7 @@ export default class ShapeGenerator {
     }
 
     reloadCube() {
-        this.main.position.set(0, 400, 0);
+        this.main.position.set(0, this.mainCubeY, 0);
 
         for (let index = 0; index < this._cubeLocation.length; index++) {
             let item = this._cubeLocation[index];
@@ -135,6 +150,17 @@ export default class ShapeGenerator {
         this.scene.add(Lights.ADD_LIGHTS[1]);
         this.scene.add(Lights.ADD_LIGHTS[2]);
         this.scene.add(Lights.ADD_LIGHTS[3]);
+
+
+
+        this.scene.add( Lights.SPOT_LIGHTS[0] );
+        this.scene.add( Lights.SPOT_LIGHTS[1] );
+        this.scene.add( Lights.SPOT_LIGHTS[2] );
+        this.scene.add( Lights.SPOT_LIGHTS[3] );
+
+        let lightHelper = new THREE.SpotLightHelper( Lights.SPOT_LIGHTS[3] );
+        this.scene.add( lightHelper );
+
     }
 
     createBoxItem(x, y, z, colour, isMainCube) {
@@ -156,6 +182,34 @@ export default class ShapeGenerator {
         mesh.position.z = z;
         mesh._faceColour = colour;
         mesh._isMainCube = isMainCube;
+        this.scene.add(mesh);
+        return mesh;
+    }
+
+    createBoxItemTexture(x, y, z, colour, isMainCube) {
+        let geometry = new THREE.BoxGeometry(this.size, this.size, this.size);
+        let texture = new THREE.TextureLoader().load( "public/asset/image/pattern-4.jpeg" );
+        let texture2 = new THREE.TextureLoader().load( "public/asset/image/mix-image.png" );
+
+        let material = [
+            new THREE.MeshStandardMaterial({color: colour[0], metalness: 1,map:texture}),
+            new THREE.MeshStandardMaterial({color: colour[1], metalness: 1,map:texture}),
+            new THREE.MeshStandardMaterial({color: colour[2], metalness: 1,map:texture}),
+            new THREE.MeshStandardMaterial({color: colour[3], metalness: 1,map:texture}),
+            new THREE.MeshStandardMaterial({color: colour[4], metalness: 1,map:texture}),
+            new THREE.MeshStandardMaterial({color: colour[5], metalness: 1,map:texture})
+        ];
+
+        let mesh = new THREE.Mesh(geometry, material);
+
+        mesh.position.y = y;
+        mesh.position.x = x;
+        mesh.position.z = z;
+        mesh._faceColour = colour;
+        mesh._isMainCube = isMainCube;
+        mesh.receiveShadow = true;
+        mesh.castShadow = true;
+
         this.scene.add(mesh);
         return mesh;
     }
@@ -304,14 +358,43 @@ export default class ShapeGenerator {
             this.main.rotation.x -= 0.02;
             this.main.rotation.z -= 0.02;
 
+            /*this.particales.vertices.forEach(function(particle){
+
+                var dX, dY, dZ;
+                dX = Math.random() * 2 - 1;
+                dY = Math.random() * 2 - 1;
+                dZ = Math.random() * 2 - 1;
+
+                particle.add(new THREE.Vector3(dX, dY, dZ));
+            });
+*/
+            //this.particales.verticesNeedUpdate = true;
+
             for (let item of this._cubeCollection) {
                 item.cube.rotation.y += item.rotation.y;
                 item.cube.rotation.x -= item.rotation.x;
                 item.cube.rotation.z += item.rotation.z;
 
-                item.cube.position.z = Math.cos(item.angle) * this.radius;
-                item.cube.position.x = Math.sin(item.angle) * this.radius;
-                //item.cube.position.y = Math.sin(item.angle) * this.radius;
+                item.cube.position.z = Math.cos(item.angle) * this.radius ;
+                item.cube.position.x = Math.sin(item.angle) * this.radius ;
+                item.cube.position.y = Math.cos(item.angle) *-150 ;
+
+                item.particles.getParticles().vertices.forEach(function(particle){
+
+                    var dX, dY, dZ;
+                    dX = item.cube.position.x/100;
+                    dY = item.cube.position.y/100;
+                    dZ = item.cube.position.z/100;
+
+                    particle.add(new THREE.Vector3(dX, dY, dZ));
+
+                });
+                item.particles.getParticles().verticesNeedUpdate = true;
+
+
+                if(item.cube.position.x > (window.innerWidth+500)){
+                    item.cube.position.x = window.innerWidth*-1;
+                }
 
                 item.angle += 0.01;
             }

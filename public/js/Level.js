@@ -24,6 +24,8 @@ export default class Level {
         this.levelTitle.textContent = "Select Level";
         this.levelListHolder.appendChild(this.levelTitle);
 
+        this.animationOn = false;
+
         for (let index = 1; index < this.numberOfLevel; index++) {
             let level = document.createElement("DIV");
             level.classList.add("level");
@@ -39,11 +41,18 @@ export default class Level {
                 level.textContent = index;
             }
 
+
+
             level.addEventListener('click', (event) => {
 
-                this.shapeGenerator.init(Math.ceil(event.srcElement.VALUE * 1.5));
-                this.shapeGenerator.loadCube();
-                this.shapeGenerator.animate();
+                //this.shapeGenerator.init(Math.ceil(event.srcElement.VALUE));
+                this.shapeGenerator.init(10);
+                this.shapeGenerator.loadCube(Math.ceil(event.srcElement.VALUE));
+                if(this.animationOn === false){
+                    this.shapeGenerator.animate();
+                }
+                this.animationOn = true;
+
                 this.hideLevel();
             })
         }

@@ -20,4 +20,64 @@ export default class Light {
 
         return lights;
     }
+
+    static get SPOT_LIGHTS() {
+        let lights= [];
+
+        let spotLight = new THREE.SpotLight( 0xffffff, 2 );
+        spotLight.position.set( 0, 700, 0 );
+        spotLight.angle = Math.PI / 4;
+        spotLight.penumbra = 1;
+        spotLight.decay = 2;
+        spotLight.distance = 800;
+        spotLight.castShadow = true;
+        spotLight.shadow.mapSize.width = 1024;
+        spotLight.shadow.mapSize.height = 1024;
+        spotLight.shadow.camera.near = 0;
+        spotLight.shadow.camera.far = 0;
+
+        let spotLight2 = new THREE.SpotLight( 0xffffff, 2 );
+        spotLight2.position.set( window.innerWidth, 0, 100 );
+        spotLight2.angle = Math.PI / 4;
+        spotLight2.penumbra = 1;
+        spotLight2.decay = 2;
+        spotLight2.distance = 0;
+        spotLight2.castShadow = true;
+        spotLight2.shadow.mapSize.width = 0;
+        spotLight2.shadow.mapSize.height = 0;
+        spotLight2.shadow.camera.near = 0;
+        spotLight2.shadow.camera.far = 0;
+
+        let spotLight3 = new THREE.SpotLight( 0xffffff, 2 );
+        spotLight3.position.set( window.innerWidth*-1, 0, 100 );
+        spotLight3.angle = Math.PI / 4;
+        spotLight3.penumbra = 1;
+        spotLight3.decay = 2;
+        spotLight3.distance = 0;
+        spotLight3.castShadow = true;
+        spotLight3.shadow.mapSize.width = 0;
+        spotLight3.shadow.mapSize.height = 0;
+        spotLight3.shadow.camera.near = 0;
+        spotLight3.shadow.camera.far = 0;
+
+        let spotLight4= new THREE.SpotLight( 0xffffff, 2 );
+        spotLight4.position.set( 0, window.innerHeight, 0 );
+        spotLight4.angle = Math.PI/1.5;
+        spotLight4.penumbra = 1;
+        spotLight4.decay = 2;
+        spotLight4.distance = 500;
+        spotLight4.castShadow = true;
+        spotLight4.shadow.mapSize.width = 0;
+        spotLight4.shadow.mapSize.height = 0;
+        spotLight4.shadow.camera.near = 0;
+        spotLight4.shadow.camera.far = 1000;
+
+        lights.push(spotLight);
+        lights.push(spotLight2);
+        lights.push(spotLight3);
+        lights.push(spotLight4);
+
+        return lights;
+
+    }
 }
