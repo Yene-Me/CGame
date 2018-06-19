@@ -8,20 +8,21 @@ export default class ParticleGenerator {
         this.size= size;
     }
 
-    create() {
+    create(x,y,z) {
 
         for(var index= 0; index < this.size; index++) {
 
-            const x = (Math.random() * 800) - 400;
-            const y = (Math.random() * 800) - 400;
-            const z = (Math.random() * 800) - 400;
+            const x = (Math.random() * x) - x;
+            const y = (Math.random() * y) - y;
+            const z = (Math.random() * z) - z;
 
             this.geometry.vertices.push(new THREE.Vector3(x, y, z));
 
         }
 
         let material = new THREE.PointCloudMaterial({
-            color: 0xFF0000
+            color: 0xFF0000,
+            size:10
         });
 
         return new THREE.PointCloud(this.geometry, material);

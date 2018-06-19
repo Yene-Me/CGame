@@ -15,7 +15,7 @@ export default class Light {
         lights[2].castShadow = true;
 
         lights[3] = new THREE.DirectionalLight(0xffffff, .5);
-        lights[3].position.set(0, 0, 10);
+        lights[3].position.set(0, -600, -500);
         lights[3].castShadow = true;
 
         return lights;
