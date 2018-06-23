@@ -4,7 +4,7 @@ export default class Light {
 
     static get ADD_LIGHTS() {
         let lights = [];
-        lights.push(new THREE.AmbientLight(0xFFFFFF, .5)); // soft white light
+        lights.push(new THREE.AmbientLight(0xFFFFFF, 1)); // soft white light
 
         lights[1] = new THREE.DirectionalLight(0xffffff, .5);
         lights[1].position.set(0, 10, 0);

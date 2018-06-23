@@ -59,7 +59,7 @@ export default class ShapeGenerator {
         this.createColourSet();
         this.createRandomNumber();
         this.addLight();
-        this.initLights();
+        //this.initLights();
         this.mouse = new THREE.Vector2();
         this.mouse.x = -1000;
         this.mouse.y = -1000;
@@ -188,9 +188,9 @@ export default class ShapeGenerator {
         directionalLight.position.set( -1, 1, 1 ).normalize();
         this.scene.add( directionalLight );
 
-        let spotLight = new THREE.SpotLight( 0x404040 );
-        spotLight.position.set( 0, 50, 0 );
-        this.scene.add( spotLight );
+        //let spotLight = new THREE.SpotLight( 0x404040 );
+        //spotLight.position.set( 0, 50, 0 );
+        //this.scene.add( spotLight );
     }
 
     createBoxItem(x, y, z, colour, isMainCube) {
@@ -218,16 +218,21 @@ export default class ShapeGenerator {
 
     createBoxItemTexture(x, y, z, colour, isMainCube) {
         let geometry = new THREE.BoxGeometry(this.size, this.size, this.size);
-        let texture = new THREE.TextureLoader().load( "public/asset/image/pattern-5.png" );
+        let texture1 = new THREE.TextureLoader().load( "public/asset/image/pattern-1.gif" );
+        //let texture2 = new THREE.TextureLoader().load( "public/asset/image/pattern-2.png" );
+        //let texture3 = new THREE.TextureLoader().load( "public/asset/image/pattern-3.gif" );
+        //let texture4 = new THREE.TextureLoader().load( "public/asset/image/pattern-3.jpeg" );
+        //let texture5 = new THREE.TextureLoader().load( "public/asset/image/pattern-5.png" );
+        //let texture6 = new THREE.TextureLoader().load( "public/asset/image/pattern-1.gif" );
 
 
         let material = [
-            new THREE.MeshStandardMaterial({color: colour[0], metalness: 1,map:texture}),
-            new THREE.MeshStandardMaterial({color: colour[1], metalness: 1,map:texture}),
-            new THREE.MeshStandardMaterial({color: colour[2], metalness: 1,map:texture}),
-            new THREE.MeshStandardMaterial({color: colour[3], metalness: 1,map:texture}),
-            new THREE.MeshStandardMaterial({color: colour[4], metalness: 1,map:texture}),
-            new THREE.MeshStandardMaterial({color: colour[5], metalness: 1,map:texture})
+            new THREE.MeshLambertMaterial({color: colour[0], metalness: 2,map:texture1}),
+            new THREE.MeshLambertMaterial({color: colour[1], metalness: 2,map:texture1}),
+            new THREE.MeshLambertMaterial({color: colour[2], metalness: 2,map:texture1}),
+            new THREE.MeshLambertMaterial({color: colour[3], metalness: 2,map:texture1}),
+            new THREE.MeshLambertMaterial({color: colour[4], metalness: 2,map:texture1}),
+            new THREE.MeshLambertMaterial({color: colour[5], metalness: 2,map:texture1})
         ];
 
         let mesh = new THREE.Mesh(geometry, material);
