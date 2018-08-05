@@ -163,7 +163,7 @@ export default class ShapeGenerator {
 
         let lightHelper = new THREE.SpotLightHelper( Lights.SPOT_LIGHTS[3] );
         var helper = new THREE.DirectionalLightHelper( Lights.ADD_LIGHTS[3], 5 );
-        this.scene.add( helper );
+        this.scene.add( lightHelper );
 
     }
 
@@ -388,51 +388,64 @@ export default class ShapeGenerator {
             this.animate()
         });
 
-        if (!this.isCompareOn) {
-            this.main.rotation.y -= 0.01;
-            this.main.rotation.x -= 0.02;
-            this.main.rotation.z -= 0.02;
-
-
-            for (let item of this._cubeCollection) {
-                item.cube.rotation.y += item.rotation.y;
-                item.cube.rotation.x -= item.rotation.x;
-                item.cube.rotation.z += item.rotation.z;
-
-                item.cube.position.z = Math.cos(item.angle) * this.radius ;
-                item.cube.position.x = Math.sin(item.angle) * this.radius ;
-                item.cube.position.y = Math.cos(item.angle) *-150 ;
-
-
-
-                Lights.SPOT_LIGHTS[3].position.set(item.cube.position.x,item.cube.position.y,item.cube.position.z )
-
-                /*item.particles.getParticles().vertices.forEach(function(particle){
-
-                    var dX, dY, dZ;
-                    dZ = Math.cos(a) * r;
-                    dX = Math.sin(a) * r;
-                    dY = Math.cos(a) * -150;
-                    //a += 0.1;
-
-                    particle.add(new THREE.Vector3(dX, dY, dZ));
-
-                });
-                item.particles.getParticles().verticesNeedUpdate = true;*/
-
-
-                if(item.cube.position.x > (window.innerWidth+500)){
-                    item.cube.position.x = window.innerWidth*-1;
-                }
-
-                item.angle += 0.01;
-            }
-
-        }
+        this.moveInLine();
 
         this.update();
         TWEEN.update();
         this.renderer.render(this.scene, this.camera);
+
+    }
+
+    moveInLine () {
+
+        if (this.isCompareOn) {
+            return;
+        }
+
+        this.main.rotation.y -= 0.01;
+        this.main.rotation.x -= 0.02;
+        this.main.rotation.z -= 0.02;
+
+
+        for (let item of this._cubeCollection) {
+            item.cube.rotation.y += item.rotation.y;
+            item.cube.rotation.x -= item.rotation.x;
+            item.cube.rotation.z += item.rotation.z;
+
+
+            if(item.cube.position.y > 0 && item.cube.position.y > -300) {
+                item.cube.position.y -=1;
+            }else if(item.cube.position.y < -300 && item.cube.position.y < 0) {
+                item.cube.cube.position.y +=1;
+            }
+
+            //console.log("item.cube.position.y" ,item.cube.position.y)
+
+        }
+
+    }
+
+
+
+    moveAroundInCircle () {
+
+        if (this.isCompareOn) {return;}
+
+        this.main.rotation.y -= 0.01;
+        this.main.rotation.x -= 0.02;
+        this.main.rotation.z -= 0.02;
+
+
+        for (let item of this._cubeCollection) {
+            item.cube.rotation.y += item.rotation.y;
+            item.cube.rotation.x -= item.rotation.x;
+            item.cube.rotation.z += item.rotation.z;
+
+            item.cube.position.z = Math.cos(item.angle) * this.radius ;
+            item.cube.position.x = Math.sin(item.angle) * this.radius ;
+            item.cube.position.y = Math.cos(item.angle) *-150 ;
+            item.angle += 0.01;
+        }
 
     }
 }

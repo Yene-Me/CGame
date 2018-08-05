@@ -62,15 +62,15 @@ export default class Light {
 
         let spotLight4= new THREE.SpotLight( 0xffffff, 2 );
         spotLight4.position.set( 0, window.innerHeight, 0 );
-        spotLight4.angle = Math.PI/1.5;
+        spotLight4.angle = Math.PI/3;
         spotLight4.penumbra = 1;
         spotLight4.decay = 2;
-        spotLight4.distance = 500;
+        spotLight4.distance = 0;
         spotLight4.castShadow = true;
         spotLight4.shadow.mapSize.width = 0;
         spotLight4.shadow.mapSize.height = 0;
         spotLight4.shadow.camera.near = 0;
-        spotLight4.shadow.camera.far = 1000;
+        spotLight4.shadow.camera.far = 10;
 
         lights.push(spotLight);
         lights.push(spotLight2);
