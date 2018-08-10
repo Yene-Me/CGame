@@ -41,22 +41,26 @@ export default class Level {
                 level.textContent = index;
             }
 
-
-
             level.addEventListener('click', (event) => {
 
-                //this.shapeGenerator.init(Math.ceil(event.srcElement.VALUE));
-                this.shapeGenerator.init(10);
-                this.shapeGenerator.loadCube(Math.ceil(event.srcElement.VALUE));
-                if(this.animationOn === false){
-                    this.shapeGenerator.animate();
-                }
-                this.animationOn = true;
-
-                this.hideLevel();
+                this.loadLevel(event.srcElement.VALUE)
             })
         }
+
+        this.loadLevel(1);
+
         document.body.appendChild(this.levelListHolder);
+    }
+
+    loadLevel(level) {
+        //this.shapeGenerator.init(Math.ceil(event.srcElement.VALUE));
+        this.shapeGenerator.init(10);
+        this.shapeGenerator.loadCube(Math.ceil(level));
+        if(this.animationOn === false){
+            this.shapeGenerator.animate();
+        }
+        this.animationOn = true;
+        this.hideLevel();
     }
 
     hideLevel() {

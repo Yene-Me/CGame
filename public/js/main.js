@@ -16,7 +16,7 @@ let backgroundMusic = new Howl({
     volume: 0.5,
 });
 
-let soundButton = document.createElement("div")
+let soundButton = document.createElement("div");
 
 soundButton.classList.add("sound");
 
@@ -36,7 +36,7 @@ soundButton.addEventListener('click', ()=>{
   }
 
   backgroundMusic.volume = 0;
-})
+});
 
 
 document.body.appendChild(soundButton);

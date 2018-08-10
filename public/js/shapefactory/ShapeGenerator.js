@@ -8,10 +8,11 @@ import Const from '../core/Const';
 import Colours from "../util/Colours";
 import Counter from "../core/counter";
 import ParticlesGenerator from "../particle/ParticlesGenerator"
+import Cube from "./Cube";
 
 export default class ShapeGenerator {
     constructor(uiElement) {
-        this.TOTAL_CUBE_ITEMS = 10;
+        this.TOTAL_CUBE_ITEMS = 27;
         this._shapeHolder = uiElement;
         this.scene = null;
         this.camera = null;
@@ -44,17 +45,22 @@ export default class ShapeGenerator {
 
         this.lights = [];
 
+        this.cube = new Cube();
+
+        this.groupCubes = new THREE.Group();
+
         PubSub.subscribe(Const.RELOAD, () => {
             console.log("reload Game");
             this.counter.startCounter();
         });
+
     }
 
     init(level) {
-        this.TOTAL_CUBE_ITEMS = level;
+        this.TOTAL_CUBE_ITEMS = 27;
         this.mouse = null;
         this.removeAllObject();
-        this._cubeLocation = new CubeLocation(this.TOTAL_CUBE_ITEMS, 200).createSimpleLocationPoints();
+        this._cubeLocation = new CubeLocation(this.TOTAL_CUBE_ITEMS, 200).createSimpleStackPoints();
 
         this.createColourSet();
         this.createRandomNumber();
@@ -84,46 +90,17 @@ export default class ShapeGenerator {
         for (let index = 0; index < this.TOTAL_CUBE_ITEMS; index++) {
             numberList.push(index)
         }
-        for (var a = numberList, i = a.length; i--;) {
-            var random = a.splice(Math.floor(Math.random() * (i + 1)), 1)[0];
+        for (let a = numberList, i = a.length; i--;) {
+            let random = a.splice(Math.floor(Math.random() * (i + 1)), 1)[0];
             this.randomColour.push(random);
         }
-
     }
 
-    createColourBaseCube () {
-        this.main = this.createBoxItemTexture(0, this.mainCubeY, 0, this.boxColour[0], true);
-        var index = 0;
-        for (let item of this._cubeLocation) {
-            let cubeData = {
-                cube: this.createBoxItemTexture(item.x, -200, item.z, this.boxColour[this.randomColour[index]], false),
-                angle: item.angel,
-                particles: this.createParticle(item.x,-200,item.z),
-                rotation: {
-                    x: Math.random() / 50,
-                    y: Math.random() / 50,
-                    z: Math.random() / 50
-                }
-            }
-            index++;
-            this._cubeCollection.push(cubeData);
-        }
-    }
-
-    createParticle(x,y,z) {
-
-        this.particles = new ParticlesGenerator(100);
-
-        //this.scene.add(this.particles.create(x,y,z));
-
-        return this.particles;
-
-    }
 
     loadCube(cubeType) {
 
         if(cubeType === 1) {
-            this.createColourBaseCube();
+            this.cube.createColourStackCube(this);
         }
 
         if(this.counter)
@@ -135,8 +112,6 @@ export default class ShapeGenerator {
             this.counter = new Counter();
             this.counter.startCounter();
         }
-
-
     }
 
     reloadCube() {
@@ -156,15 +131,14 @@ export default class ShapeGenerator {
 
 
 
-        this.scene.add( Lights.SPOT_LIGHTS[0] );
-        this.scene.add( Lights.SPOT_LIGHTS[1] );
-        this.scene.add( Lights.SPOT_LIGHTS[2] );
-        this.scene.add( Lights.SPOT_LIGHTS[3] );
+        this.scene.add( Lights.SPOT_LIGHTS[0]);
+        this.scene.add( Lights.SPOT_LIGHTS[1]);
+        this.scene.add( Lights.SPOT_LIGHTS[2]);
+        this.scene.add( Lights.SPOT_LIGHTS[3]);
 
-        let lightHelper = new THREE.SpotLightHelper( Lights.SPOT_LIGHTS[3] );
-        var helper = new THREE.DirectionalLightHelper( Lights.ADD_LIGHTS[3], 5 );
-        this.scene.add( lightHelper );
-
+        //let lightHelper = new THREE.SpotLightHelper( Lights.SPOT_LIGHTS[3] );
+        //var helper = new THREE.DirectionalLightHelper( Lights.ADD_LIGHTS[3], 5 );
+        //this.scene.add( lightHelper );
     }
 
     initLights() {
@@ -193,61 +167,7 @@ export default class ShapeGenerator {
         //this.scene.add( spotLight );
     }
 
-    createBoxItem(x, y, z, colour, isMainCube) {
-        let geometry = new THREE.BoxGeometry(this.size, this.size, this.size);
 
-        let material = [
-            new THREE.MeshStandardMaterial({color: colour[0], metalness: 0.1}),
-            new THREE.MeshStandardMaterial({color: colour[1], metalness: 0.1}),
-            new THREE.MeshStandardMaterial({color: colour[2], metalness: 0.1}),
-            new THREE.MeshStandardMaterial({color: colour[3], metalness: 0.1}),
-            new THREE.MeshStandardMaterial({color: colour[4], metalness: 0.1}),
-            new THREE.MeshStandardMaterial({color: colour[5], metalness: 0.1})
-        ];
-
-        let mesh = new THREE.Mesh(geometry, material);
-
-        mesh.position.y = y;
-        mesh.position.x = x;
-        mesh.position.z = z;
-        mesh._faceColour = colour;
-        mesh._isMainCube = isMainCube;
-        this.scene.add(mesh);
-        return mesh;
-    }
-
-    createBoxItemTexture(x, y, z, colour, isMainCube) {
-        let geometry = new THREE.BoxGeometry(this.size, this.size, this.size);
-        let texture1 = new THREE.TextureLoader().load( "public/asset/image/pattern-1.gif" );
-        //let texture2 = new THREE.TextureLoader().load( "public/asset/image/pattern-2.png" );
-        //let texture3 = new THREE.TextureLoader().load( "public/asset/image/pattern-3.gif" );
-        //let texture4 = new THREE.TextureLoader().load( "public/asset/image/pattern-3.jpeg" );
-        //let texture5 = new THREE.TextureLoader().load( "public/asset/image/pattern-5.png" );
-        //let texture6 = new THREE.TextureLoader().load( "public/asset/image/pattern-1.gif" );
-
-
-        let material = [
-            new THREE.MeshLambertMaterial({color: colour[0], metalness: 2,map:texture1}),
-            new THREE.MeshLambertMaterial({color: colour[1], metalness: 2,map:texture1}),
-            new THREE.MeshLambertMaterial({color: colour[2], metalness: 2,map:texture1}),
-            new THREE.MeshLambertMaterial({color: colour[3], metalness: 2,map:texture1}),
-            new THREE.MeshLambertMaterial({color: colour[4], metalness: 2,map:texture1}),
-            new THREE.MeshLambertMaterial({color: colour[5], metalness: 2,map:texture1})
-        ];
-
-        let mesh = new THREE.Mesh(geometry, material);
-
-        mesh.position.y = y;
-        mesh.position.x = x;
-        mesh.position.z = z;
-        mesh._faceColour = colour;
-        mesh._isMainCube = isMainCube;
-        mesh.receiveShadow = true;
-        mesh.castShadow = true;
-
-        this.scene.add(mesh);
-        return mesh;
-    }
 
     onMouseMove(event) {
         this.mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
@@ -274,7 +194,6 @@ export default class ShapeGenerator {
                 this.moveToPoint(intersects[i].object);
             }
         }
-
     }
 
     moveToPoint(object) {
@@ -323,10 +242,7 @@ export default class ShapeGenerator {
                 main["rotation"].z = this.z;
             }).start();
 
-
         this.camera.z = 100;
-
-
     }
 
     checkPickedWithMain(selectedObject) {
@@ -388,16 +304,36 @@ export default class ShapeGenerator {
             this.animate()
         });
 
-        this.moveInLine();
+        this.moveStackCubes();
 
         this.update();
         TWEEN.update();
         this.renderer.render(this.scene, this.camera);
+    }
 
+    moveStackCubes() {
+        if (this.isCompareOn) {
+            return;
+        }
+
+        this.cube.main.rotation.y -= 0.01;
+        this.cube.main.rotation.x -= 0.02;
+        this.cube.main.rotation.z -= 0.02;
+
+        this.groupCubes.rotation.y -= 0.01;
+        this.groupCubes.rotation.x -= 0.02;
+        //this.groupCubes.rotation.z -= 0.02;
+
+        for (let item of this._cubeCollection) {
+
+            for(let child of item.children){
+                child.rotation.y += 0.001;
+            }
+
+        }
     }
 
     moveInLine () {
-
         if (this.isCompareOn) {
             return;
         }
@@ -406,29 +342,27 @@ export default class ShapeGenerator {
         this.main.rotation.x -= 0.02;
         this.main.rotation.z -= 0.02;
 
-
         for (let item of this._cubeCollection) {
             item.cube.rotation.y += item.rotation.y;
             item.cube.rotation.x -= item.rotation.x;
             item.cube.rotation.z += item.rotation.z;
 
+            if(!this.canMoveDown) {
+                item.cube.position.y +=1;
+                if(item.cube.position.y > 200) {
+                    this.canMoveDown = true;
+                }
 
-            if(item.cube.position.y > 0 && item.cube.position.y > -300) {
-                item.cube.position.y -=1;
-            }else if(item.cube.position.y < -300 && item.cube.position.y < 0) {
-                item.cube.cube.position.y +=1;
+            }else {
+                item.cube.position.y-=1;
+                if(item.cube.position.y < -200) {
+                    this.canMoveDown = false;
+                }
             }
-
-            //console.log("item.cube.position.y" ,item.cube.position.y)
-
         }
-
     }
 
-
-
     moveAroundInCircle () {
-
         if (this.isCompareOn) {return;}
 
         this.main.rotation.y -= 0.01;
