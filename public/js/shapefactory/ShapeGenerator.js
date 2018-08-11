@@ -66,7 +66,6 @@ export default class ShapeGenerator {
         this.mouse.y = -1000;
     }
 
-
     removeAllObject()
     {
       while(this.scene.children.length > 0){
