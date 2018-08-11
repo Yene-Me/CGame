@@ -1,5 +1,14 @@
 import {Howl} from 'howler';
 import Level from "../js/Level";
+const FastSimplexNoise = require('fast-simplex-noise').default;
+
+
+
+//const noiseGen = new FastSimplexNoise({ frequency: 0.01, max: 255, min: 0, octaves: 8 })
+
+//for (let x = 0; x < 10; x++) for (let y = 0; y < 7; y++) {
+//    console.log("test noise 1: " , noiseGen.scaled3D(x, y,y));
+//}
 
 
 let level = new Level();
@@ -11,7 +20,7 @@ let isSoundOn = true;
 //Play some background music forever
 let backgroundMusic = new Howl({
     src: ['public/asset/audio/music/TheMonkeyIsland.mp3'],
-    autoplay: true,
+    autoplay: false,
     loop: true,
     volume: 0.5,
 });

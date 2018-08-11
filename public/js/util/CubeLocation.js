@@ -34,7 +34,7 @@ export default class CubeLocation {
         let yPoint = 0;
         let zPoint = 0;
         let spaceBetween = 200;
-        console.log('this._cubeLocation: 3' , this._numberOfCube);
+
         for(let index = 0; index < this._numberOfCube; index++) {
 
             let x = index%3;
@@ -52,7 +52,7 @@ export default class CubeLocation {
                 z:zPoint*spaceBetween,
                 angel:this._angel});
 
-            this._angel +=this._slice;
+            this._angel += this._slice;
         }
 
         return this._locationPoints;

@@ -7,7 +7,6 @@ import PubSub from '../core/PubSub';
 import Const from '../core/Const';
 import Colours from "../util/Colours";
 import Counter from "../core/counter";
-import ParticlesGenerator from "../particle/ParticlesGenerator"
 import Cube from "./Cube";
 
 export default class ShapeGenerator {
@@ -17,7 +16,7 @@ export default class ShapeGenerator {
         this.scene = null;
         this.camera = null;
         this.renderer = null;
-        this.size = SizeFinder.CUBE_SIZE;
+
         this.raycaster = new THREE.Raycaster();
 
         this.isCheckInProgress = false;
@@ -34,19 +33,15 @@ export default class ShapeGenerator {
         this._shapeHolder.appendChild(this.renderer.domElement);
 
         this.scene = new THREE.Scene();
-
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+
         this.camera.position.z = 1000;
-
         this.mainCubeY = window.innerHeight*0.50;
-
         this._cubeCollection = [];
         this.radius = Math.min(50 * window.innerWidth / 100, 400);
-
         this.lights = [];
 
         this.cube = new Cube();
-
         this.groupCubes = new THREE.Group();
 
         PubSub.subscribe(Const.RELOAD, () => {
@@ -146,9 +141,9 @@ export default class ShapeGenerator {
         let c = new THREE.Vector3();
         let geometry = new THREE.SphereBufferGeometry( 1, 1, 1 );
 
-        for ( var i = 0; i < 40 ; i ++ ) {
+        for ( let i = 0; i < 40 ; i ++ ) {
             console.log(i);
-            var light = new THREE.PointLight( 0xffffff, 2.0, distance );
+            let light = new THREE.PointLight( 0xffffff, 2.0, distance );
             c.set( Math.random(), Math.random(), Math.random() ).normalize();
             light.color.setRGB( c.x, c.y, c.z );
             this.scene.add( light );
@@ -320,14 +315,16 @@ export default class ShapeGenerator {
         this.cube.main.rotation.x -= 0.02;
         this.cube.main.rotation.z -= 0.02;
 
-        this.groupCubes.rotation.y -= 0.01;
-        this.groupCubes.rotation.x -= 0.02;
+        //this.groupCubes.rotation.y -= 0.01;
+        //this.groupCubes.rotation.x -= 0.02;
         //this.groupCubes.rotation.z -= 0.02;
+        this.groupCubes.position.x = -200;
+        this.groupCubes.position.y = -200;
 
         for (let item of this._cubeCollection) {
 
             for(let child of item.children){
-                child.rotation.y += 0.001;
+                child.rotation.y += 0.01;
             }
 
         }

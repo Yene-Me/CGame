@@ -20,14 +20,14 @@ export default class Colours {
 
     static get COLOUR_LIST() {
         return [
-            "#E91E63",
-            "#9C27B0",
-            "#3F51B5",
-            "#2196F3",
-            "#4CAF50",
-            "#FFEB3B",
-            "#FF9800",
-            "#FF5722",
+            "#999",
+            "#222",
+            "#333",
+            "#444",
+            "#555",
+            "#666",
+            "#777",
+            "#888",
         ]
     }
 }

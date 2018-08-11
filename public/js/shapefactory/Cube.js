@@ -1,10 +1,12 @@
 import * as THREE from "three";
 import ParticlesGenerator from "../particle/ParticlesGenerator";
+import SizeFinder from "../util/SizeFinder";
 
 export default class Cube {
 
     constructor(){
         this.main = null;
+        this.size = SizeFinder.CUBE_SIZE;
     }
 
     createBoxItem(x, y, z, colour, isMainCube) {
@@ -31,7 +33,7 @@ export default class Cube {
     }
 
     createBoxItemTexture(x, y, z, colour, isMainCube,context) {
-        let geometry = new THREE.BoxGeometry(context.size, context.size, context.size);
+        let geometry = new THREE.BoxGeometry(this.size, this.size, this.size);
         let texture1 = new THREE.TextureLoader().load( "public/asset/image/pattern-1.gif" );
         //let texture2 = new THREE.TextureLoader().load( "public/asset/image/pattern-2.png" );
         //let texture3 = new THREE.TextureLoader().load( "public/asset/image/pattern-3.gif" );
@@ -65,10 +67,10 @@ export default class Cube {
 
 
     createBoxStackTexture(x, y, z, colour, isMainCube,context) {
-        let geometry = new THREE.BoxGeometry(context.size, context.size, context.size);
+        let geometry = new THREE.BoxGeometry(this.size, this.size, this.size);
         let texture1 = new THREE.TextureLoader().load( "public/asset/image/pattern-1.gif" );
         let texture2 = new THREE.TextureLoader().load( "public/asset/image/pattern-2.png" );
-        let texture3 = new THREE.TextureLoader().load( "public/asset/image/pattern-3.gif" );
+        let texture3 = new THREE.TextureLoader().load( "public/asset/image/dirty.jpg" );
         //let texture4 = new THREE.TextureLoader().load( "public/asset/image/pattern-3.jpeg" );
         //let texture5 = new THREE.TextureLoader().load( "public/asset/image/pattern-5.png" );
         //let texture6 = new THREE.TextureLoader().load( "public/asset/image/pattern-1.gif" );
