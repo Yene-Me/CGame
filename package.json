@@ -7,7 +7,7 @@
     "express": "^4.15.2",
     "fast-simplex-noise": "^3.2.0",
     "howler": "^2.0.4",
-    "three": "^0.85.2",
+    "three": "^0.137.4",
     "time-counter": "^1.0.0",
     "tween.js": "^16.6.0"
   },
